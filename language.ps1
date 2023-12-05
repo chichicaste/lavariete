@@ -1,3 +1,18 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
+################################
+# This script takes a range of commits and generates
+# a commit log with the git2git-excluded file changes
+# filtered out.
+#
+# It also replaces GitHub issue numbers with GH-XXX so
+# as to not confuse Git2Git or Azure DevOps.
+# Community contributions are tagged with CC- so they
+# can be detected later.
+
+$vesion = '1.0.0'
+
 # Add reference to the Windows.Forms assembly
 Add-Type -AssemblyName System.Windows.Forms
 
