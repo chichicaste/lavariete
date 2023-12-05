@@ -1,52 +1,52 @@
-# Agregar referencia al ensamblados de Windows
+# Add reference to the Windows.Forms assembly
 Add-Type -AssemblyName System.Windows.Forms
+
 <#
-Add-Type -TypeDefinition @"
+# Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
 
 public class Shell32 {
-    [DllImport("Shell32.dll")]
-    public static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
+  [DllImport("Shell32.dll")]
+  public static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
 }
 "@
 #>
 
-# Define los idiomas que deseas instalar
-$idiomas = @('en-US', 'es-US', 'es-MX', 'es-SV', 'es-419')
+# Define the languages you want to install
+$languages = @('en-US', 'es-US', 'es-MX', 'es-SV', 'es-419')
 
-# Obtener la lista actual de idiomas del usuario
-$idiomasInstalados = (Get-WinUserLanguageList).LanguageTag
+# Get the current list of user languages
+$installedLanguages = (Get-WinUserLanguageList).LanguageTag
 
-# Filtrar los idiomas que aún no están instalados
-$idiomasParaInstalar = $idiomas | Where-Object { $idiomasInstalados -notcontains $_ }
-$totalIdiomas = $idiomasParaInstalar.Count
-$idiomaActual = 0
+# Filter the languages that are not yet installed
+$languagesToInstall = $languages | Where-Object { $installedLanguages -notcontains $_ }
+$totalLanguages = $languagesToInstall.Count
+$currentLanguage = 0
 
-# Instala los idiomas que faltan
-foreach ($idioma in $idiomasParaInstalar) {
-    $idiomaActual++
-    Write-Progress -Activity "Instalando idiomas" -Status "$idioma" -PercentComplete (($idiomaActual / $totalIdiomas) * 100)
-    $languagePack = New-WinUserLanguageList $idioma
-    $languagePack[0].InstallLanguagePack()
+# Install the missing languages
+foreach ($language in $languagesToInstall) {
+  $currentLanguage++
+  Write-Progress -Activity "Installing languages" -Status "$language" -PercentComplete (($currentLanguage / $totalLanguages) * 100)
+  $languagePack = New-WinUserLanguageList $language
+  $languagePack[0].InstallLanguagePack()
 }
 
-# Establecer Español (Estados Unidos) como idioma predeterminado
-$listaIdiomas = New-WinUserLanguageList es-US
-Set-WinUserLanguageList $listaIdiomas -Force
+# Set Spanish (United States) as the default language
+$languageList = New-WinUserLanguageList es-US
+Set-WinUserLanguageList $languageList -Force
 # Set-WinHomeLocation -GeoId 244
 Set-Culture es-US
 
-
-# Aplicar los cambios
+# Apply changes
 Start-Process "RUNDLL32.EXE" "USER32.DLL,UpdatePerUserSystemParameters" -NoNewWindow
 
 <#
 [Shell32]::SHChangeNotify(0x8000000, 0x1000, [IntPtr]::Zero, [IntPtr]::Zero)
 #>
 
-# Mostrar ventana emergente de advertencia
-[System.Windows.Forms.MessageBox]::Show("Tener en cuenta que algunos elementos del sistema pueden no reconocer los cambios hasta después de un reinicio completo", "Advertencia")
+# Show an alert window
+[System.Windows.Forms.MessageBox]::Show("Keep in mind that some system elements may not recognize language changes until a full restart", "Warning", 0, [System.Windows.Forms.MessageBoxIcon]::Warning)
 
-# Cerrar la barra de progreso
-Write-Progress -Activity "Instalando idiomas" -Completed
+# Close the progress bar
+Write-Progress -Activity "Installing languages" -Completed
