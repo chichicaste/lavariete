@@ -7,3 +7,5 @@ You can list available versions with `python.exe portable-msvc.py --show-version
 To use cl.exe/link.exe from output folder, first run `setup.bat` - after that PATH/INCLUDE/LIB env variables will be setup to use all the tools as usual. You can also use clang-cl.exe with these includes & libraries.
 
 To use clang-cl.exe without running setup.bat, pass extra `/winsysroot msvc` argument (msvc is folder name where output is stored).
+
+https://gist.github.com/mmozeiko/7f3162ec2988e81e56d5c4e22cde9977/raw/e7b8cc6e74d14b8fecba1a8d555b271373306c1a/portable-msvc.py
