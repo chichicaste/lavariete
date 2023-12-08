@@ -1,6 +1,3 @@
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT license.
-
 $vesion = '1.0.0'
 
 # Add reference to the Windows.Forms assembly
