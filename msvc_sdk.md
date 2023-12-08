@@ -8,7 +8,7 @@ To use cl.exe/link.exe from output folder, first run `setup.bat` - after that PA
 
 To use clang-cl.exe without running setup.bat, pass extra `/winsysroot msvc` argument (msvc is folder name where output is stored).
 
-```
+```python
 #!/usr/bin/env python3
 
 import io
