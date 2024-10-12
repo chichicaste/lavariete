@@ -1,0 +1,62 @@
+<Sysmon schemaversion="4.20">
+  <!-- Configuración de hash -->
+  <HashAlgorithms>md5,sha256</HashAlgorithms>
+
+  <!-- Configuración de los eventos que queremos capturar -->
+  <EventFiltering>
+
+    <!-- Capturar la creación de procesos -->
+    <ProcessCreate onmatch="include">
+      <!-- Captura todos los procesos creados -->
+      <Image condition="is">*</Image>
+    </ProcessCreate>
+
+    <!-- Capturar la terminación de procesos -->
+    <ProcessTerminate onmatch="include">
+      <!-- Captura todos los procesos que se terminan -->
+      <Image condition="is">*</Image>
+    </ProcessTerminate>
+
+    <!-- Capturar conexiones de red -->
+    <NetworkConnect onmatch="include">
+      <!-- Capturar todas las conexiones de red -->
+      <DestinationHostname condition="is">*</DestinationHostname>
+    </NetworkConnect>
+
+    <!-- Capturar acceso a archivos y directorios -->
+    <FileCreate onmatch="include">
+      <!-- Monitorear la creación de archivos en cualquier directorio -->
+      <TargetFilename condition="is">*</TargetFilename>
+    </FileCreate>
+
+    <FileCreateStreamHash onmatch="include">
+      <!-- Capturar flujos de archivos en todos los directorios -->
+      <TargetFilename condition="is">*</TargetFilename>
+    </FileCreateStreamHash>
+
+    <!-- Capturar cambios en el registro -->
+    <RegistryEvent onmatch="include">
+      <!-- Capturar modificaciones en las claves del registro -->
+      <TargetObject condition="contains">\Software\Microsoft\Windows\CurrentVersion\Run\</TargetObject>
+      <TargetObject condition="contains">\SYSTEM\CurrentControlSet\Services\</TargetObject>
+    </RegistryEvent>
+
+    <!-- Monitorear la carga de controladores (drivers) -->
+    <DriverLoad onmatch="include">
+      <!-- Capturar la carga de controladores (*.sys) -->
+      <ImageLoaded condition="end with">.sys</ImageLoaded>
+    </DriverLoad>
+
+    <!-- Capturar la carga de imágenes (DLLs y ejecutables) -->
+    <ImageLoad onmatch="include">
+      <!-- Capturar la carga de archivos .dll -->
+      <ImageLoaded condition="end with">.dll</ImageLoaded>
+    </ImageLoad>
+
+    <ImageLoad onmatch="include">
+      <!-- Capturar la carga de archivos .exe -->
+      <ImageLoaded condition="end with">.exe</ImageLoaded>
+    </ImageLoad>
+
+  </EventFiltering>
+</Sysmon>
